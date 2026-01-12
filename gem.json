@@ -1,7 +1,7 @@
 {
-    "gem_name": "TuLabSound",
+    "gem_name": "Sune",
     "version": "1.0.0",
-    "display_name": "TuLabSound",
+    "display_name": "Sune",
     "license": "MIT",
     "license_url": "",
     "origin": "Reece Hagan",
@@ -12,7 +12,7 @@
         "Gem"
     ],
     "user_tags": [
-        "TuLabSound",
+        "Sune",
 		"LabSound",
 		"Audio"
     ],

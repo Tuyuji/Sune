@@ -8,10 +8,10 @@
 #include "AzCore/Component/Component.h"
 #include "AzCore/RTTI/ReflectContext.h"
 #include "Clients/Components/Configs/AudioPlayerComponentConfig.h"
-#include "TuLabSound/TuLabSoundBus.h"
-#include "TuLabSound/AudioPlayerBus.h"
+#include "Sune/SuneBus.h"
+#include "Sune/AudioPlayerBus.h"
 
-namespace TuLabSound
+namespace Sune
 {
     class AudioPlayerComponentController
         : protected AudioPlayerRequestBus::Handler
@@ -50,4 +50,4 @@ namespace TuLabSound
 
         SoundPlayerId m_playerId;
     };
-} // TuLabSound
+} // Sune

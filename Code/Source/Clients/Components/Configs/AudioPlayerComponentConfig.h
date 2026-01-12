@@ -7,9 +7,9 @@
 #pragma once
 #include "AzCore/Component/ComponentBus.h"
 #include "LabSound/core/PannerNode.h"
-#include "TuLabSound/SoundAsset.h"
+#include "Sune/SoundAsset.h"
 
-namespace TuLabSound
+namespace Sune
 {
     class AudioPlayerComponentConfig : public AZ::ComponentConfig
     {
@@ -24,7 +24,7 @@ namespace TuLabSound
         bool m_loop = false;
         bool m_autoPlay = true;
     };
-} // TuLabSound
+} // Sune
 
 namespace AZ
 {

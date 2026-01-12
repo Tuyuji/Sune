@@ -7,7 +7,7 @@
 #pragma once
 
 #include <vector>
-#include <TuLabSound/AudioBusManagerInterface.h>
+#include <Sune/AudioBusManagerInterface.h>
 #include <AzCore/std/containers/map.h>
 
 namespace lab
@@ -16,7 +16,7 @@ namespace lab
     class GainNode;
 }
 
-namespace TuLabSound
+namespace Sune
 {
     class Bus final
         : public AudioBusRequestsBus::Handler
@@ -56,4 +56,4 @@ namespace TuLabSound
     private:
         AZStd::map<AudioBusId, AZStd::unique_ptr<Bus>> m_busMap;
     };
-} // TuLabSound
+} // Sune

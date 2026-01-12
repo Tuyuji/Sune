@@ -7,7 +7,7 @@
 #include "SoundBuilderSettings.h"
 #include <AzCore/Serialization/SerializeContext.h>
 
-using namespace TuLabSound;
+using namespace Sune;
 
 void SoundBuilderSettings::Reflect(AZ::ReflectContext* context)
 {

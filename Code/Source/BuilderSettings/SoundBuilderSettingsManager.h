@@ -11,7 +11,7 @@
 #include "AzCore/std/string/string.h"
 #include "AzCore/std/typetraits/add_cv.h"
 
-namespace TuLabSound
+namespace Sune
 {
     // Forward declarations
     struct SoundAssetSettings;

@@ -10,10 +10,10 @@
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/EditContextConstants.inl>
 
-#include <TuLabSound/AudioPlayerBus.h>
-#include <TuLabSound/Effects/VisualizerBus.h>
+#include <Sune/AudioPlayerBus.h>
+#include <Sune/Effects/VisualizerBus.h>
 
-using namespace TuLabSound;
+using namespace Sune;
 
 void VisualizerComponent::Reflect(AZ::ReflectContext* context)
 {
@@ -30,7 +30,7 @@ void VisualizerComponent::Reflect(AZ::ReflectContext* context)
             ec->Class<VisualizerComponent>("Audio Visualizer", "Visualizes audio frequencies by scaling entities")
                 ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
                     ->Attribute(AZ::Edit::Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
-                    ->Attribute(AZ::Edit::Attributes::Category, "TuLabSound")
+                    ->Attribute(AZ::Edit::Attributes::Category, "Sune")
                     ->Attribute(AZ::Edit::Attributes::Icon, "Icons/Components/Component_Placeholder.svg")
                     ->Attribute(AZ::Edit::Attributes::AutoExpand, true)
                 ->DataElement(AZ::Edit::UIHandlers::Default, &VisualizerComponent::m_visualizerEntities,
@@ -69,20 +69,20 @@ void VisualizerComponent::Activate()
 
     if (!m_playerId.IsValid())
     {
-        AZ_Error("TuLabSound", false, "VisualizerComponent requires an AudioPlayerComponent on the same entity.");
+        AZ_Error("Sune", false, "VisualizerComponent requires an AudioPlayerComponent on the same entity.");
         return;
     }
 
     // Add the visualizer effect to the player
-    TuSoundPlayerRequestBus::EventResult(
+    SoundPlayerRequestBus::EventResult(
         m_visualizerEffectId,
         m_playerId,
-        &TuSoundPlayerRequestBus::Events::AddEffect,
+        &SoundPlayerRequestBus::Events::AddEffect,
         "visualizer");
 
     if (!m_visualizerEffectId.IsValid())
     {
-        AZ_Error("TuLabSound", false, "Failed to add visualizer effect to player.");
+        AZ_Error("Sune", false, "Failed to add visualizer effect to player.");
         return;
     }
 
@@ -102,7 +102,7 @@ void VisualizerComponent::Deactivate()
     // Remove the visualizer effect from the player
     if (m_visualizerEffectId.IsValid())
     {
-        TuSoundPlayerRequestBus::Event(m_playerId, &TuSoundPlayerRequestBus::Events::RemoveEffect, m_visualizerEffectId);
+        SoundPlayerRequestBus::Event(m_playerId, &SoundPlayerRequestBus::Events::RemoveEffect, m_visualizerEffectId);
         m_visualizerEffectId = PlayerEffectId();
     }
 

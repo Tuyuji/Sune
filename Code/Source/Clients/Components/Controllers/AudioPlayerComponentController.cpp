@@ -7,9 +7,9 @@
 #include "AudioPlayerComponentController.h"
 #include <AzCore/Serialization/SerializeContext.h>
 
-#include "TuLabSound/PlayerAudioEffect.h"
+#include "Sune/PlayerAudioEffect.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 AudioPlayerComponentController::AudioPlayerComponentController(const AudioPlayerComponentConfig& config)
 {
@@ -30,12 +30,12 @@ void AudioPlayerComponentController::Reflect(AZ::ReflectContext* context)
 
 void AudioPlayerComponentController::GetProvidedServices(AZ::ComponentDescriptor::DependencyArrayType& provided)
 {
-    provided.push_back(TuLabSound::AudioPlayerServiceName);
+    provided.push_back(Sune::AudioPlayerServiceName);
 }
 
 void AudioPlayerComponentController::GetIncompatibleServices(AZ::ComponentDescriptor::DependencyArrayType& incompatible)
 {
-    incompatible.push_back(TuLabSound::AudioPlayerServiceName);
+    incompatible.push_back(Sune::AudioPlayerServiceName);
 }
 
 void AudioPlayerComponentController::GetRequiredServices(AZ::ComponentDescriptor::DependencyArrayType& required)
@@ -55,7 +55,7 @@ const AudioPlayerComponentConfig& AudioPlayerComponentController::GetConfigurati
 void AudioPlayerComponentController::Activate(const AZ::EntityComponentIdPair& entityComponentIdPair)
 {
     m_entityComponentIdPair = entityComponentIdPair;
-    m_playerId = TuLabSoundInterface::Get()->CreatePlayer();
+    m_playerId = SuneInterface::Get()->CreatePlayer();
     OnConfigurationUpdated();
 
     AudioPlayerRequestBus::Handler::BusConnect(m_entityComponentIdPair.GetEntityId());
@@ -64,16 +64,16 @@ void AudioPlayerComponentController::Activate(const AZ::EntityComponentIdPair& e
 void AudioPlayerComponentController::Deactivate()
 {
     AudioPlayerRequestBus::Handler::BusDisconnect();
-    TuLabSoundInterface::Get()->DestroyPlayer(m_playerId);
+    SuneInterface::Get()->DestroyPlayer(m_playerId);
     m_playerId = SoundPlayerId();
 }
 
 void AudioPlayerComponentController::OnConfigurationUpdated()
 {
-    TuSoundPlayerRequestBus::Event(m_playerId, &TuSoundPlayerRequestBus::Events::SetBus, m_config.m_audioBus);
-    TuSoundPlayerRequestBus::Event(m_playerId, &TuSoundPlayerRequestBus::Events::SetAsset, m_config.m_audioAsset.GetId());
-    TuSoundPlayerRequestBus::Event(m_playerId, &TuSoundPlayerRequestBus::Events::SetPlayMultiple, m_config.m_playMultiple);
-    TuSoundPlayerRequestBus::Event(m_playerId, &TuSoundPlayerRequestBus::Events::SetGain, m_config.m_gain);
+    SoundPlayerRequestBus::Event(m_playerId, &SoundPlayerRequestBus::Events::SetBus, m_config.m_audioBus);
+    SoundPlayerRequestBus::Event(m_playerId, &SoundPlayerRequestBus::Events::SetAsset, m_config.m_audioAsset.GetId());
+    SoundPlayerRequestBus::Event(m_playerId, &SoundPlayerRequestBus::Events::SetPlayMultiple, m_config.m_playMultiple);
+    SoundPlayerRequestBus::Event(m_playerId, &SoundPlayerRequestBus::Events::SetGain, m_config.m_gain);
 }
 
 SoundPlayerId AudioPlayerComponentController::GetPlayerId() const
@@ -85,10 +85,10 @@ void AudioPlayerComponentController::Play()
 {
     if (m_config.m_loop)
     {
-        TuSoundPlayerRequestBus::Event(m_playerId, &TuSoundPlayerRequestBus::Events::PlayLooping, -1, 0.0f);
+        SoundPlayerRequestBus::Event(m_playerId, &SoundPlayerRequestBus::Events::PlayLooping, -1, 0.0f);
     }
     else
     {
-        TuSoundPlayerRequestBus::Event(m_playerId, &TuSoundPlayerRequestBus::Events::Play);
+        SoundPlayerRequestBus::Event(m_playerId, &SoundPlayerRequestBus::Events::Play);
     }
 }

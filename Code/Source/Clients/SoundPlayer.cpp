@@ -16,16 +16,16 @@
 #include "LabSound/core/AudioDevice.h"
 #include "LabSound/core/AudioNodeOutput.h"
 #include "LabSound/core/PannerNode.h"
-#include "TuLabSound/SoundAsset.h"
-#include "TuLabSound/Utils.h"
+#include "Sune/SoundAsset.h"
+#include "Sune/Utils.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 SoundPlayer::SoundPlayer(SoundPlayerId id) : m_id(id)
 {
-    TuSoundPlayerRequestBus::Handler::BusConnect(m_id);
+    SoundPlayerRequestBus::Handler::BusConnect(m_id);
 
-    auto tls = TuLabSoundInterface::Get();
+    auto tls = SuneInterface::Get();
     AZ_Assert(tls, "LabSoundInterface not initialized");
     auto ctx = tls->GetLabContext();
     AZ_Assert(ctx, "LabContext not initialized");
@@ -41,7 +41,7 @@ SoundPlayer::SoundPlayer(SoundPlayerId id) : m_id(id)
 SoundPlayer::~SoundPlayer()
 {
     AZ::Data::AssetBus::MultiHandler::BusDisconnect();
-    TuSoundPlayerRequestBus::Handler::BusDisconnect();
+    SoundPlayerRequestBus::Handler::BusDisconnect();
 
     for (auto& effect : m_effects)
     {
@@ -72,14 +72,14 @@ void SoundPlayer::SetBus(const AZStd::string& bus)
         return;
     }
 
-    auto ctx = TuLabSoundInterface::Get()->GetLabContext();
+    auto ctx = SuneInterface::Get()->GetLabContext();
     AZ_Assert(ctx, "LabContext not initialized");
     if (m_gainConnected)
     {
         //Already have a connection, lets disconnect
         if (m_busId == 0)
         {
-            AZ_Error("TuLabSound", false, "Already connected but we dont have a bus on player %d", m_id);
+            AZ_Error("Sune", false, "Already connected but we dont have a bus on player %d", m_id);
             return;
         }
 
@@ -89,13 +89,13 @@ void SoundPlayer::SetBus(const AZStd::string& bus)
         //disconnect
         ctx->disconnect(dest, m_gainNode);
         m_gainConnected = false;
-        AZ_Info("TuLabSound", "Disconnected bus %s from player %d", bus.c_str(), m_id);
+        AZ_Info("Sune", "Disconnected bus %s from player %d", bus.c_str(), m_id);
     }
 
     m_busId = newBus;
     if (m_busId == 0)
     {
-        AZ_Error("TuLabSound", false, "Invalid bus set for player %d\n", m_id);
+        AZ_Error("Sune", false, "Invalid bus set for player %d\n", m_id);
         return;
     }
     std::shared_ptr<lab::AudioNode> dest;
@@ -103,7 +103,7 @@ void SoundPlayer::SetBus(const AZStd::string& bus)
 
     if (dest == nullptr)
     {
-        AZ_Error("TuLabSound", false, "Bus for player %d doesn't have a input :(\n", m_id);
+        AZ_Error("Sune", false, "Bus for player %d doesn't have a input :(\n", m_id);
         return;
     }
 
@@ -116,7 +116,7 @@ void SoundPlayer::SetBus(const AZStd::string& bus)
         ctx->synchronizeConnections();
     }
     m_gainConnected = true;
-    AZ_Info("TuLabSound", "Connected bus %s to player %d\n", busName.c_str(), m_id);
+    AZ_Info("Sune", "Connected bus %s to player %d\n", busName.c_str(), m_id);
 }
 
 void SoundPlayer::SetAsset(const AZ::Data::AssetId assetId)
@@ -129,7 +129,7 @@ void SoundPlayer::SetAsset(const AZ::Data::AssetId assetId)
     auto asset = AZ::Data::AssetManager::Instance().GetAsset<SoundAsset>(assetId, AZ::Data::AssetLoadBehavior::PreLoad);
     if (!asset)
     {
-        AZ_Error("TuLabSound", false, "Failed to load asset %s", assetId.ToString<AZStd::string>().c_str());
+        AZ_Error("Sune", false, "Failed to load asset %s", assetId.ToString<AZStd::string>().c_str());
         return;
     }
 
@@ -202,14 +202,14 @@ void SoundPlayer::Play()
 {
     if (!m_assetId.IsValid())
     {
-        AZ_Error("TuLabSound", false, "No asset set for player %d", m_id);
+        AZ_Error("Sune", false, "No asset set for player %d", m_id);
         return;
     }
 
     if (m_currentAsset.GetId() != m_assetId)
     {
         //Still in the process of waiting on the bus to be loaded
-        auto ctx = TuLabSoundInterface::Get()->GetLabContext();
+        auto ctx = SuneInterface::Get()->GetLabContext();
         m_schedPlayEvents.push_back({ctx->currentTime()});
         return;
     }
@@ -226,14 +226,14 @@ void SoundPlayer::PlayAtSeconds(float seconds)
 {
     if (!m_assetId.IsValid())
     {
-        AZ_Error("TuLabSound", false, "No asset set for player %d", m_id);
+        AZ_Error("Sune", false, "No asset set for player %d", m_id);
         return;
     }
 
     if (m_currentAsset.GetId() != m_assetId)
     {
         //Still in the process of waiting on the bus to be loaded
-        auto ctx = TuLabSoundInterface::Get()->GetLabContext();
+        auto ctx = SuneInterface::Get()->GetLabContext();
         m_schedPlayEvents.push_back({ctx->currentTime() + seconds});
         return;
     }
@@ -250,13 +250,13 @@ void SoundPlayer::PlayLooping(int loopCount, float seconds)
 {
     if (!m_assetId.IsValid())
     {
-        AZ_Error("TuLabSound", false, "No asset set for player %d", m_id);
+        AZ_Error("Sune", false, "No asset set for player %d", m_id);
         return;
     }
 
     if (m_currentAsset.GetId() != m_assetId)
     {
-        auto ctx = TuLabSoundInterface::Get()->GetLabContext();
+        auto ctx = SuneInterface::Get()->GetLabContext();
         m_schedPlayEvents.push_back({ctx->currentTime() + seconds, loopCount});
         return;
     }
@@ -279,7 +279,7 @@ bool SoundPlayer::IsPlaying()
     if (m_node->playbackState() == lab::SchedulingState::PLAYING
         || m_node->playbackState() == lab::SchedulingState::SCHEDULED)
     {
-        auto ctx = TuLabSoundInterface::Get()->GetLabContext();
+        auto ctx = SuneInterface::Get()->GetLabContext();
         lab::ContextRenderLock l(ctx.get(), "");
         return m_node->getCursor() > 0;
     }
@@ -295,7 +295,7 @@ float SoundPlayer::GetPositionInSeconds()
 
     int32_t sampleCursor = -1;
     {
-        auto ctx = TuLabSoundInterface::Get()->GetLabContext();
+        auto ctx = SuneInterface::Get()->GetLabContext();
         lab::ContextRenderLock l(ctx.get(), "");
         sampleCursor = m_node->getCursor();
     }
@@ -323,7 +323,7 @@ uint64_t SoundPlayer::GetPositionInMicroseconds()
 
     int32_t sampleCursor = -1;
     {
-        auto ctx = TuLabSoundInterface::Get()->GetLabContext();
+        auto ctx = SuneInterface::Get()->GetLabContext();
         lab::ContextRenderLock l(ctx.get(), "");
         sampleCursor = m_node->getCursor();
     }
@@ -345,7 +345,7 @@ uint64_t SoundPlayer::GetPositionInMicroseconds()
 PlayerEffectId SoundPlayer::AddEffect(const AZStd::string& effectName)
 {
     PlayerEffectId id = PlayerEffectId();
-    auto ctx = TuLabSoundInterface::Get()->GetLabContext();
+    auto ctx = SuneInterface::Get()->GetLabContext();
 
     auto effect = CreateEffect(effectName);
     if (effect != nullptr)
@@ -404,7 +404,7 @@ void SoundPlayer::OnAssetReady(AZ::Data::Asset<AZ::Data::AssetData> asset)
     auto soundAsset = asset.GetAs<SoundAsset>();
     if (!soundAsset)
     {
-        AZ_Error("TuLabSound", false, "Failed to load asset %s\n", asset.GetId().ToString<AZStd::string>().c_str());
+        AZ_Error("Sune", false, "Failed to load asset %s\n", asset.GetId().ToString<AZStd::string>().c_str());
         return;
     }
     m_assetBus = soundAsset->m_bus;
@@ -419,7 +419,7 @@ void SoundPlayer::OnAssetReady(AZ::Data::Asset<AZ::Data::AssetData> asset)
     //Handled schedualed playbacks
     if (!m_schedPlayEvents.empty())
     {
-        auto ctx = TuLabSoundInterface::Get()->GetLabContext();
+        auto ctx = SuneInterface::Get()->GetLabContext();
         if (m_canPlayMultiple)
         {
             for ([[maybe_unused]]auto& sched : m_schedPlayEvents)
@@ -449,7 +449,7 @@ static void DisconnectAll(lab::ContextGraphLock* l, bool bIsInput, lab::AudioNod
             if (!input)
                 continue;
             lab::AudioNodeInput::disconnectAll(*l, input);
-            AZ_Info("TuLabSound", "Disconnected input %d from node %s channel count: %d\n", i, node->name(), input->numberOfChannels(rl));
+            AZ_Info("Sune", "Disconnected input %d from node %s channel count: %d\n", i, node->name(), input->numberOfChannels(rl));
         }
     }
     else
@@ -460,7 +460,7 @@ static void DisconnectAll(lab::ContextGraphLock* l, bool bIsInput, lab::AudioNod
             if (!output)
                 continue;
             lab::AudioNodeOutput::disconnectAll(*l, output);
-            AZ_Info("TuLabSound", "Disconnected output %d from node \"%s\" channel count: %d\n", i, node->name(), output->numberOfChannels());
+            AZ_Info("Sune", "Disconnected output %d from node \"%s\" channel count: %d\n", i, node->name(), output->numberOfChannels());
         }
     }
 }
@@ -473,8 +473,8 @@ void SoundPlayer::ReconnectGraph()
         return;
     }
 
-    auto ctx = TuLabSoundInterface::Get()->GetLabContext();
-    AZ_Info("TuLabSound", "Reconnecting graph for player %d\n", m_id);
+    auto ctx = SuneInterface::Get()->GetLabContext();
+    AZ_Info("Sune", "Reconnecting graph for player %d\n", m_id);
 
     lab::ContextGraphLock r(ctx.get(), "SoundPlayer::ReconnectGraph");
 
@@ -482,7 +482,7 @@ void SoundPlayer::ReconnectGraph()
     {
         if (m_node != nullptr)
         {
-            AZ_Info("TuLabSound", "Disconnecting sample player %d\n", m_id);
+            AZ_Info("Sune", "Disconnecting sample player %d\n", m_id);
             //Disconnect all outputs from our sample player
             DisconnectAll(&r, false, m_node.get());
         }
@@ -490,7 +490,7 @@ void SoundPlayer::ReconnectGraph()
         //Disconnect all inputs from gain (our main output node)
         if (m_gainNode)
         {
-            AZ_Info("TuLabSound", "Disconnecting gain node %d\n", m_id);
+            AZ_Info("Sune", "Disconnecting gain node %d\n", m_id);
             DisconnectAll(&r, true, m_gainNode.get());
         }
 

@@ -8,9 +8,9 @@
 
 #include <AzCore/Component/Component.h>
 #include <AzCore/Component/TickBus.h>
-#include <TuLabSound/TuLabSoundBus.h>
+#include <Sune/SuneBus.h>
 
-namespace TuLabSound
+namespace Sune
 {
     /**
      * @brief Component that visualizes audio frequencies by scaling entities.
@@ -48,4 +48,4 @@ namespace TuLabSound
         SoundPlayerId m_playerId;
         PlayerEffectId m_visualizerEffectId;
     };
-} // namespace TuLabSound
+} // namespace Sune

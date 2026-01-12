@@ -14,7 +14,7 @@
 #include <AzCore/IO/IOUtils.h>
 #include <AzCore/std/smart_ptr/make_shared.h>
 #include <AzFramework/StringFunc/StringFunc.h>
-#include "TuLabSound/SoundAsset.h"
+#include "Sune/SoundAsset.h"
 #include <libnyquist/Common.h>
 #include <libnyquist/Decoders.h>
 
@@ -29,7 +29,7 @@
 #include "BuilderSettings/SoundAssetSettings.h"
 #include "BuilderSettings/SoundBuilderSettingsManager.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 AZ::SimpleLcgRandom tuls_random;
 
@@ -37,7 +37,7 @@ void SoundAssetBuilder::CreateJobs(const AssetBuilderSDK::CreateJobsRequest& req
     AssetBuilderSDK::CreateJobsResponse& response) const
 {
 	AssetBuilderSDK::SourceFileDependency globalConfigDep;
-    globalConfigDep.m_sourceFileDependencyPath = "@gemroot:TuLabSound@/Config/SoundBuilder.json";
+    globalConfigDep.m_sourceFileDependencyPath = "@gemroot:Sune@/Config/SoundBuilder.json";
     globalConfigDep.m_sourceDependencyType = AssetBuilderSDK::SourceFileDependency::SourceFileDependencyType::Absolute;
 
 	AssetBuilderSDK::SourceFileDependency globalProjectConfigDep;
@@ -48,12 +48,12 @@ void SoundAssetBuilder::CreateJobs(const AssetBuilderSDK::CreateJobsRequest& req
 	response.m_sourceFileDependencyList.push_back(globalProjectConfigDep);
 
 	AssetBuilderSDK::SourceFileDependency presetDep;
-	presetDep.m_sourceFileDependencyPath = "@gemroot:TuLabSound@/Config/TLS/*.preset";
+	presetDep.m_sourceFileDependencyPath = "@gemroot:Sune@/Config/Sune/*.preset";
 	presetDep.m_sourceDependencyType = AssetBuilderSDK::SourceFileDependency::SourceFileDependencyType::Wildcards;
 	response.m_sourceFileDependencyList.push_back(presetDep);
 
 	AssetBuilderSDK::SourceFileDependency presetProjDep;
-	presetProjDep.m_sourceFileDependencyPath = "@projectroot@/Config/TLS/*.preset";
+	presetProjDep.m_sourceFileDependencyPath = "@projectroot@/Config/Sune/*.preset";
 	presetProjDep.m_sourceDependencyType = AssetBuilderSDK::SourceFileDependency::SourceFileDependencyType::Wildcards;
 	response.m_sourceFileDependencyList.push_back(presetProjDep);
 
@@ -61,7 +61,7 @@ void SoundAssetBuilder::CreateJobs(const AssetBuilderSDK::CreateJobsRequest& req
     {
         AssetBuilderSDK::JobDescriptor jobDescriptor;
         jobDescriptor.m_critical = true;
-        jobDescriptor.m_jobKey = "TuLabSound SoundAsset";
+        jobDescriptor.m_jobKey = "Sune SoundAsset";
         jobDescriptor.SetPlatformIdentifier(platformInfo.m_identifier.c_str());
 
         response.m_createJobOutputs.push_back(jobDescriptor);
@@ -171,7 +171,7 @@ void SoundAssetBuilder::ProcessJob(const AssetBuilderSDK::ProcessJobRequest& req
 
 	if (!AZ::Utils::SaveObjectToStream(dataStream, AZ::DataStream::ST_BINARY, soundAsset.Get()))
 	{
-		AZ_Error("SoundAssetBuilder", false, "Failed to save TuLabSound metadata to file '%s'!", outputPath.c_str());
+		AZ_Error("SoundAssetBuilder", false, "Failed to save Sune metadata to file '%s'!", outputPath.c_str());
 		response.m_resultCode = AssetBuilderSDK::ProcessJobResult_Failed;
 		return;
 	}
@@ -194,10 +194,10 @@ void SoundAssetBuilder::ProcessJob(const AssetBuilderSDK::ProcessJobRequest& req
 	}
 
 	AZStd::vector<AZStd::string> configFiles = {
-		"@gemroot:TuLabSound@/Config/SoundBuilder.json",
-		"@gemroot:TuLabSound@/Config/TLS/*.preset",
+		"@gemroot:Sune@/Config/SoundBuilder.json",
+		"@gemroot:Sune@/Config/Sune/*.preset",
 		"@projectroot@/Config/SoundBuilder.json",
-		"@projectroot@/Config/TLS/*.preset"
+		"@projectroot@/Config/Sune/*.preset"
 	};
 
 	for (const auto& configFile : configFiles)
@@ -242,7 +242,7 @@ AZStd::vector<AZ::u8> SoundAssetBuilder::CompressVorbis(const nqr::AudioData* au
 	}
 
 	vorbis_comment_init(&vc);
-	vorbis_comment_add_tag(&vc, "ENCODER", "TuLabSound");
+	vorbis_comment_add_tag(&vc, "ENCODER", "Sune");
 
 	vorbis_analysis_init(&vd, &vi);
 	vorbis_block_init(&vd, &vb);

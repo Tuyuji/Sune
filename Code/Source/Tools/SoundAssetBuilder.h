@@ -8,21 +8,21 @@
 
 #include <AssetBuilderSDK/AssetBuilderBusses.h>
 
-#include "TuLabSound/TuLabSoundTypeIds.h"
+#include "Sune/SuneTypeIds.h"
 
 namespace nqr
 {
     struct AudioData;
 }
 
-namespace TuLabSound
+namespace Sune
 {
     struct SoundAssetBuilderSettings;
     class SoundAssetBuilder
         : public AssetBuilderSDK::AssetBuilderCommandBus::Handler
     {
     public:
-        AZ_RTTI(SoundAssetBuilder, TuLabSoundSoundAssetBuilderTypeId);
+        AZ_RTTI(SoundAssetBuilder, SuneSoundAssetBuilderTypeId);
 
         SoundAssetBuilder() = default;
 

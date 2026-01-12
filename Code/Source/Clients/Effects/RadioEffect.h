@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include <TuLabSound/PlayerAudioEffect.h>
+#include <Sune/PlayerAudioEffect.h>
 
 namespace lab
 {
@@ -15,7 +15,7 @@ namespace lab
     class NoiseNode;
 }
 
-namespace TuLabSound
+namespace Sune
 {
     class RadioEffect
         : public IPlayerAudioEffect
@@ -36,4 +36,4 @@ namespace TuLabSound
         std::shared_ptr<lab::BiquadFilterNode> m_lowpass;
         std::shared_ptr<lab::WaveShaperNode> m_distortion;
     };
-} // TuLabSound
+} // Sune

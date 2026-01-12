@@ -7,8 +7,8 @@
 # Get the platform specific folder ${pal_dir} for the current folder: ${CMAKE_CURRENT_LIST_DIR}/Platform/${PAL_PLATFORM_NAME}
 # Note: o3de_pal_dir will take care of the details for us, as this may be a restricted platform
 #       in which case it will see if that platform is present here or in the restricted folder.
-#       i.e. It could here in our gem : Gems/TuLabSound/Code/Platform/<platorm_name>  or
-#            <restricted_folder>/<platform_name>/Gems/TuLabSound/Code
+#       i.e. It could here in our gem : Gems/Sune/Code/Platform/<platorm_name>  or
+#            <restricted_folder>/<platform_name>/Gems/Sune/Code
 o3de_pal_dir(pal_dir ${CMAKE_CURRENT_LIST_DIR}/Platform/${PAL_PLATFORM_NAME} "${gem_restricted_path}" "${gem_path}" "${gem_parent_relative_path}")
 
 # Now that we have the platform abstraction layer (PAL) folder for this folder, thats where we will find the
@@ -17,7 +17,7 @@ o3de_pal_dir(pal_dir ${CMAKE_CURRENT_LIST_DIR}/Platform/${PAL_PLATFORM_NAME} "${
 include(${pal_dir}/PAL_${PAL_PLATFORM_NAME_LOWERCASE}.cmake)
 
 # Check to see if building the Gem Modules are supported for the current platform
-if(NOT PAL_TRAIT_TULABSOUND_SUPPORTED)
+if(NOT PAL_TRAIT_SUNE_SUPPORTED)
     return()
 endif()
 
@@ -42,18 +42,15 @@ set(CMAKE_WARN_DEPRECATED ON CACHE BOOL "" FORCE)
 
 set(LABSOUND_TARGETS libnyquist LabSound LabSoundRtAudio)
 foreach(LabSound_Target ${LABSOUND_TARGETS})
-    # OpenMesh Specific: on non-Windows platforms, it creates both a shared and a static library, and assigns them targetname
-    # xxxxxxxx and xxxxxxxxStatic.  On Windows platforms, it only makes a static library, and it is called just the targetname
-    # without appending Static on it.  We need to handle both cases here, so we have a "IF (NOT TARGET)" check.
     if (NOT TARGET ${LabSound_Target})
         continue()
     endif()
     # customize the compile options for the target, note that these defines already contain the
     # appropriate level of visibility (PUBLIC / INTERFACE / PRIVATE) and may be blank for a given compiler.
     target_compile_options(${LabSound_Target}
-            ${O3DE_COMPILE_OPTION_DISABLE_WARNINGS}     # OpenMesh does not pass Warning Level 4
-            ${O3DE_COMPILE_OPTION_EXPORT_SYMBOLS}       # OpenMesh requires symbols to be exported.
-            ${O3DE_COMPILE_OPTION_ENABLE_EXCEPTIONS})   # OpenMesh requires Exceptions enabled in it, and things that use it
+            ${O3DE_COMPILE_OPTION_DISABLE_WARNINGS}
+            ${O3DE_COMPILE_OPTION_EXPORT_SYMBOLS}
+            ${O3DE_COMPILE_OPTION_ENABLE_EXCEPTIONS})
 
     target_compile_definitions(${LabSound_Target}
             PRIVATE WIN32_LEAN_AND_MEAN)                # Fix compile errors in Windows kit header files
@@ -72,8 +69,8 @@ ly_add_target(
     NAME ${gem_name}.API INTERFACE
     NAMESPACE Gem
     FILES_CMAKE
-        tulabsound_api_files.cmake
-        ${pal_dir}/tulabsound_api_files.cmake
+        sune_api_files.cmake
+        ${pal_dir}/sune_api_files.cmake
     INCLUDE_DIRECTORIES
         INTERFACE
             Include
@@ -89,8 +86,8 @@ ly_add_target(
     NAME ${gem_name}.Private.Object STATIC
     NAMESPACE Gem
     FILES_CMAKE
-        tulabsound_private_files.cmake
-        ${pal_dir}/tulabsound_private_files.cmake
+        sune_private_files.cmake
+        ${pal_dir}/sune_private_files.cmake
     TARGET_PROPERTIES
         O3DE_PRIVATE_TARGET TRUE
     INCLUDE_DIRECTORIES
@@ -117,8 +114,8 @@ ly_add_target(
     NAME ${gem_name} ${PAL_TRAIT_MONOLITHIC_DRIVEN_MODULE_TYPE}
     NAMESPACE Gem
     FILES_CMAKE
-        tulabsound_shared_files.cmake
-        ${pal_dir}/tulabsound_shared_files.cmake
+        sune_shared_files.cmake
+        ${pal_dir}/sune_shared_files.cmake
     INCLUDE_DIRECTORIES
         PUBLIC
             Include
@@ -138,7 +135,7 @@ ly_add_target(
 # is used to bootstrap the gem in monolithic builds to link to the new gem name
 ly_add_source_properties(
 SOURCES
-    Source/Clients/TuLabSoundModule.cpp
+    Source/Clients/SuneModule.cpp
 PROPERTY COMPILE_DEFINITIONS
     VALUES
         O3DE_GEM_NAME=${gem_name}
@@ -167,8 +164,8 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         NAME ${gem_name}.Editor.API INTERFACE
         NAMESPACE Gem
         FILES_CMAKE
-            tulabsound_editor_api_files.cmake
-            ${pal_dir}/tulabsound_editor_api_files.cmake
+            sune_editor_api_files.cmake
+            ${pal_dir}/sune_editor_api_files.cmake
         INCLUDE_DIRECTORIES
             INTERFACE
                 Include
@@ -186,7 +183,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         AUTOMOC
         AUTORCC
         FILES_CMAKE
-            tulabsound_editor_private_files.cmake
+            sune_editor_private_files.cmake
         TARGET_PROPERTIES
             O3DE_PRIVATE_TARGET TRUE
         INCLUDE_DIRECTORIES
@@ -210,7 +207,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
         NAMESPACE Gem
         AUTOMOC
         FILES_CMAKE
-            tulabsound_editor_shared_files.cmake
+            sune_editor_shared_files.cmake
         INCLUDE_DIRECTORIES
             PRIVATE
                 Source
@@ -235,7 +232,7 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
     # is used to bootstrap the gem in monolithic builds to link to the new gem name
     ly_add_source_properties(
     SOURCES
-        Source/Tools/TuLabSoundEditorModule.cpp
+        Source/Tools/SuneEditorModule.cpp
     PROPERTY COMPILE_DEFINITIONS
         VALUES
             O3DE_GEM_NAME=${gem_name}
@@ -251,9 +248,12 @@ if(PAL_TRAIT_BUILD_HOST_TOOLS)
     ly_create_alias(NAME ${gem_name}.Tools.API NAMESPACE Gem TARGETS Gem::${gem_name}.Editor.API)
     ly_create_alias(NAME ${gem_name}.Builders.API NAMESPACE Gem TARGETS Gem::${gem_name}.Editor.API)
 
+    ly_create_alias(NAME ${gem_name}.TuEditor NAMESPACE Gem TARGETS Gem::${gem_name}.Editor)
+    ly_create_alias(NAME ${gem_name}.TuEditor.API NAMESPACE Gem TARGETS Gem::${gem_name}.Editor.API)
+
     # Add in CMake dependencies for each gem dependency listed in this gem's gem.json file
     # for the Tools and Builders gem variants
-    o3de_add_variant_dependencies_for_gem_dependencies(GEM_NAME ${gem_name} VARIANTS Tools Builders)
+    o3de_add_variant_dependencies_for_gem_dependencies(GEM_NAME ${gem_name} VARIANTS Tools Builders TuEditor)
 endif()
 
 ################################################################################
@@ -262,13 +262,13 @@ endif()
 # See if globally, tests are supported
 if(PAL_TRAIT_BUILD_TESTS_SUPPORTED)
     # We globally support tests, see if we support tests on this platform for ${gem_name}.Tests
-    if(PAL_TRAIT_TULABSOUND_TEST_SUPPORTED)
+    if(PAL_TRAIT_SUNE_TEST_SUPPORTED)
         # We support ${gem_name}.Tests on this platform, add dependency on the Private Object target
         ly_add_target(
             NAME ${gem_name}.Tests ${PAL_TRAIT_TEST_TARGET_TYPE}
             NAMESPACE Gem
             FILES_CMAKE
-                tulabsound_tests_files.cmake
+                sune_tests_files.cmake
             INCLUDE_DIRECTORIES
                 PRIVATE
                     Tests
@@ -290,14 +290,14 @@ if(PAL_TRAIT_BUILD_TESTS_SUPPORTED)
     # If we are a host platform we want to add tools test like editor tests here
     if(PAL_TRAIT_BUILD_HOST_TOOLS)
         # We are a host platform, see if Editor tests are supported on this platform
-        if(PAL_TRAIT_TULABSOUND_EDITOR_TEST_SUPPORTED)
+        if(PAL_TRAIT_SUNE_EDITOR_TEST_SUPPORTED)
             # We support ${gem_name}.Editor.Tests on this platform, add ${gem_name}.Editor.Tests target which depends on
             # private ${gem_name}.Editor.Private.Object target
             ly_add_target(
                 NAME ${gem_name}.Editor.Tests ${PAL_TRAIT_TEST_TARGET_TYPE}
                 NAMESPACE Gem
                 FILES_CMAKE
-                    tulabsound_editor_tests_files.cmake
+                    sune_editor_tests_files.cmake
                 INCLUDE_DIRECTORIES
                     PRIVATE
                         Tests

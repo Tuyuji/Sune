@@ -12,7 +12,7 @@
 #include "AzCore/Component/NonUniformScaleBus.h"
 #include "imgui/imgui.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 VisualizerEffect::VisualizerEffect()
 {
@@ -42,7 +42,7 @@ void VisualizerEffect::Shutdown()
     VisualizerEffectRequestBus::Handler::BusDisconnect();
     PlayerEffectImGuiRequestBus::Handler::BusDisconnect();
 
-    auto ctx = TuLabSound::TuLabSoundInterface::Get()->GetLabContext();
+    auto ctx = Sune::SuneInterface::Get()->GetLabContext();
     ctx->removeAutomaticPullNode(m_analyser);
 
     m_analyser = nullptr;
@@ -73,7 +73,7 @@ void VisualizerEffect::SetVisualizerEntities(const AZStd::vector<AZ::EntityId>& 
 {
     m_visualizerEntities = entities;
 
-    auto ctx = TuLabSound::TuLabSoundInterface::Get()->GetLabContext();
+    auto ctx = Sune::SuneInterface::Get()->GetLabContext();
     lab::ContextRenderLock l(ctx.get(), "");
     m_analyser->setFftSize(l, m_visualizerEntities.size() * 2);
 }
@@ -189,7 +189,7 @@ void VisualizerEffect::DrawGui()
             {
                 fftSize = 1;
             }
-            auto ctx = TuLabSound::TuLabSoundInterface::Get()->GetLabContext();
+            auto ctx = Sune::SuneInterface::Get()->GetLabContext();
             lab::ContextRenderLock l(ctx.get(), "");
             m_analyser->setFftSize(l, fftSize);
         }

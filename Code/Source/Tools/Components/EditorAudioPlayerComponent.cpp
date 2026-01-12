@@ -6,7 +6,7 @@
  */
 #include "EditorAudioPlayerComponent.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 void EditorAudioPlayerComponent::Reflect(AZ::ReflectContext* context)
 {
@@ -25,7 +25,7 @@ void EditorAudioPlayerComponent::Reflect(AZ::ReflectContext* context)
 
         ec->Class<EditorAudioPlayerComponent>("Audio Player Component", "")
             ->ClassElement(AZ::Edit::ClassElements::EditorData, "")
-            ->Attribute(AZ::Edit::Attributes::Category, "TuLabSound")
+            ->Attribute(AZ::Edit::Attributes::Category, "Sune")
             ->Attribute(Attributes::AppearsInAddComponentMenu, AZ_CRC_CE("Game"))
             ->Attribute(Attributes::AutoExpand, true)
             ->UIElement(UIHandlers::Button, "", "Plays the audio asset.")
@@ -86,7 +86,7 @@ AZ::u32 EditorAudioPlayerComponent::OnConfigurationChanged()
     m_controller.OnConfigurationUpdated();
     if (m_autoPlayEditor)
     {
-        TuSoundPlayerRequestBus::Event(m_controller.m_playerId, &TuSoundPlayerRequestBus::Events::StopAll);
+        SoundPlayerRequestBus::Event(m_controller.m_playerId, &SoundPlayerRequestBus::Events::StopAll);
         m_controller.Play();
     }
     return AZ::Edit::PropertyRefreshLevels::AttributesAndValues;
@@ -100,6 +100,6 @@ AZ::Crc32 EditorAudioPlayerComponent::OnPlayClicked()
 
 AZ::Crc32 EditorAudioPlayerComponent::OnStopClicked()
 {
-    TuSoundPlayerRequestBus::Event(m_controller.m_playerId, &TuSoundPlayerRequestBus::Events::StopAll);
+    SoundPlayerRequestBus::Event(m_controller.m_playerId, &SoundPlayerRequestBus::Events::StopAll);
     return AZ::Edit::PropertyRefreshLevels::None;
 }

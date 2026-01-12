@@ -12,7 +12,7 @@
 #include "Clients/Components/Controllers/AudioPlayerComponentController.h"
 #include "Clients/Components/AudioPlayerComponent.h"
 
-namespace TuLabSound
+namespace Sune
 {
     class EditorAudioPlayerComponent
         : public AzToolsFramework::Components::EditorComponentAdapter
@@ -36,4 +36,4 @@ namespace TuLabSound
 
         bool m_autoPlayEditor = false;
     };
-} // TuLabSound
+} // Sune

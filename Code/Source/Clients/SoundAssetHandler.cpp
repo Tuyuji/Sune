@@ -6,7 +6,7 @@
  */
 #include "SoundAssetHandler.h"
 
-#include "TuLabSound/SoundAsset.h"
+#include "Sune/SoundAsset.h"
 
 #include <libnyquist/Common.h>
 #include <libnyquist/Decoders.h>
@@ -14,7 +14,7 @@
 #include "AzCore/Serialization/Utils.h"
 #include "LabSound/core/AudioBus.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 SoundAssetHandler::SoundAssetHandler()
 {
@@ -362,7 +362,7 @@ void SoundAssetHandler::GetAssetTypeExtensions(AZStd::vector<AZStd::string>& ext
 
 const char* SoundAssetHandler::GetAssetTypeDisplayName() const
 {
-    return "Sound Asset (TuLabSound Gem)";
+    return "Sound Asset (Sune Gem)";
 }
 
 const char* SoundAssetHandler::GetBrowserIcon() const

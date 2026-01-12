@@ -1,9 +1,14 @@
-# TuLabSound
+# Sune
 This is an audio gem for O3DE that will have some advanced features like:
  - Audio Graph Editor
  - Mixing
  - And other stuff.
 
+Hopefully, these will come sune ;)
+
+### Notice
+This repo used to be called TuLabSound :)
+ 
 This uses [LabSound](https://github.com/LabSound/LabSound) under the hood, please check out their project too.
 
 ### Work in progress

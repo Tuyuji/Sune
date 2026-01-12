@@ -1,0 +1,10 @@
+set(FILES
+    Include/Sune/SuneTypeIds.h
+    Include/Sune/SuneBus.h
+    Include/Sune/AudioBusManagerInterface.h
+    Include/Sune/AudioPlayerBus.h
+    Include/Sune/SoundAsset.h
+    Include/Sune/PlayerAudioEffect.h
+    Include/Sune/Utils.h
+    Include/Sune/Effects/VisualizerBus.h
+)

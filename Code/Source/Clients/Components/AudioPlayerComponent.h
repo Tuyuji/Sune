@@ -11,7 +11,7 @@
 #include "Configs/AudioPlayerComponentConfig.h"
 #include "Controllers/AudioPlayerComponentController.h"
 
-namespace TuLabSound
+namespace Sune
 {
     class AudioPlayerComponent
         : public AzFramework::Components::ComponentAdapter<AudioPlayerComponentController, AudioPlayerComponentConfig>
@@ -27,4 +27,4 @@ namespace TuLabSound
 
         void Activate() override;
     };
-} // TuLabSound
+} // Sune

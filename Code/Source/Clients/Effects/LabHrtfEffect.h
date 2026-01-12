@@ -6,9 +6,9 @@
  */
 #pragma once
 
-#include <TuLabSound/PlayerAudioEffect.h>
+#include <Sune/PlayerAudioEffect.h>
 
-namespace TuLabSound
+namespace Sune
 {
     class LabHrtfEffect
         : public IPlayerAudioEffect
@@ -37,4 +37,4 @@ namespace TuLabSound
     private:
         std::shared_ptr<lab::PannerNode> m_node;
     };
-} // TuLabSound
+} // Sune

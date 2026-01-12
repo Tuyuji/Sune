@@ -8,7 +8,7 @@
 
 #include "LabSound/core/AudioBus.h"
 #include "LabSound/core/AudioContext.h"
-#include "TuLabSound/TuLabSoundBus.h"
+#include "Sune/SuneBus.h"
 #include <vector>
 #include <algorithm>
 
@@ -16,24 +16,24 @@
 #include "LabSound/core/AudioDevice.h"
 #include "LabSound/core/GainNode.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 Bus::Bus(AudioBusId id, const AZStd::string& name)
     : m_id(id)
     , m_name(name)
 {
-    auto ctx = TuLabSoundInterface::Get()->GetLabContext();
+    auto ctx = SuneInterface::Get()->GetLabContext();
     AudioBusRequestsBus::Handler::BusConnect(m_id);
     m_gainNode = std::make_shared<lab::GainNode>(*ctx);
 
     if (ctx->destinationNode())
     {
-        AZ_Info("TuLabSound", "Bus '%s' connecting to destination node\n", name.c_str());
+        AZ_Info("Sune", "Bus '%s' connecting to destination node\n", name.c_str());
         ctx->connect(ctx->destinationNode(), m_gainNode);
     }
     else
     {
-        AZ_Error("TuLabSound", false, "Bus '%s' - NO DESTINATION NODE FOUND! Audio will not play!\n", name.c_str());
+        AZ_Error("Sune", false, "Bus '%s' - NO DESTINATION NODE FOUND! Audio will not play!\n", name.c_str());
     }
 }
 

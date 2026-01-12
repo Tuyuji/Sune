@@ -7,7 +7,7 @@
 #include "AudioPlayerComponentConfig.h"
 #include <AzCore/Serialization/SerializeContext.h>
 
-using namespace TuLabSound;
+using namespace Sune;
 
 void AudioPlayerComponentConfig::Reflect(AZ::ReflectContext* context)
 {

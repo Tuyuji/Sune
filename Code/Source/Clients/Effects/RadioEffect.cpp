@@ -12,7 +12,7 @@
 #include "imgui/imgui.h"
 #include "LabSound/core/AudioNodeOutput.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 bool RadioEffect::Initialize(lab::AudioContext& ac)
 {

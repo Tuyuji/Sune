@@ -5,12 +5,12 @@
  * For complete copyright and license terms please see the LICENSE at the root of this distribution.
  */
 #pragma once
-#include <TuLabSound/SoundAsset.h>
+#include <Sune/SoundAsset.h>
 #include "AzCore/Memory/SystemAllocator.h"
 #include "AzCore/RTTI/ReflectContext.h"
 #include "AzCore/RTTI/TypeInfoSimple.h"
 
-namespace TuLabSound
+namespace Sune
 {
     // Single preset config
     struct SoundPresetSettings

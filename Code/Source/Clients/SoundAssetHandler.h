@@ -10,7 +10,7 @@
 #include <AzCore/Asset/AssetTypeInfoBus.h>
 #include <AzCore/Asset/AssetManager.h>
 
-namespace TuLabSound
+namespace Sune
 {
     class SoundAsset;
     class SoundAssetHandler

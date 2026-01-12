@@ -6,10 +6,10 @@
  */
 #include "LabHrtfEffect.h"
 
-#include "TuLabSound/Utils.h"
+#include "Sune/Utils.h"
 #include "imgui/imgui.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 bool LabHrtfEffect::Initialize(lab::AudioContext& ac)
 {

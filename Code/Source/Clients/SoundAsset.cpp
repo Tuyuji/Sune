@@ -4,13 +4,13 @@
  *
  * For complete copyright and license terms please see the LICENSE at the root of this distribution.
  */
-#include <TuLabSound/SoundAsset.h>
+#include <Sune/SoundAsset.h>
 
 #include <AzCore/Serialization/EditContext.h>
 #include <AzCore/Serialization/SerializeContext.h>
 #include <AzCore/Serialization/ObjectStream.h>
 
-using namespace TuLabSound;
+using namespace Sune;
 
 void SoundAsset::Reflect(AZ::ReflectContext* context)
 {
@@ -40,7 +40,7 @@ void SoundAsset::Reflect(AZ::ReflectContext* context)
 
         if (auto* editContext = serializeContext->GetEditContext())
         {
-            editContext->Class<SoundAsset>("TuLabSound SoundAsset", "")->ClassElement(AZ::Edit::ClassElements::EditorData, "");
+            editContext->Class<SoundAsset>("Sune SoundAsset", "")->ClassElement(AZ::Edit::ClassElements::EditorData, "");
         }
     }
 }

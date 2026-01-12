@@ -17,7 +17,7 @@
 
 #include "AzCore/Serialization/Utils.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 SoundBuilderSettingsManager* SoundBuilderSettingsManager::Get()
 {
@@ -39,7 +39,7 @@ void SoundBuilderSettingsManager::Initialise()
         return;
     }
 
-    const char* gemRootAlias = "@gemroot:TuLabSound@";
+    const char* gemRootAlias = "@gemroot:Sune@";
     char resolvedPath[AZ_MAX_PATH_LEN];
     if (fileIO->ResolvePath(gemRootAlias, resolvedPath, AZ_MAX_PATH_LEN))
     {
@@ -152,8 +152,8 @@ void SoundBuilderSettingsManager::LoadGlobalSetting(const AZStd::string settingP
 void SoundBuilderSettingsManager::LoadPresets()
 {
     // Load presets from gem: <gem>/Config/*.preset
-    AZStd::string gemPresetsPath = AZStd::string::format("%s/Config/TLS/", m_gemRoot.c_str());
-    AZStd::string projectPresetsPath = AZStd::string::format("%s/Config/TLS/", m_projectRoot.c_str());
+    AZStd::string gemPresetsPath = AZStd::string::format("%s/Config/Sune/", m_gemRoot.c_str());
+    AZStd::string projectPresetsPath = AZStd::string::format("%s/Config/Sune/", m_projectRoot.c_str());
 
     char resolved[AZ_MAX_PATH_LEN];
 
@@ -287,8 +287,8 @@ AZStd::string SoundBuilderSettingsManager::GenerateFingerprint() const
     hashFile(projectConfigPath);
 
     AZStd::vector<AZStd::string> presetPaths;
-    AZStd::string gemPresetsPath = AZStd::string::format("%s/Config/TLS/", m_gemRoot.c_str());
-    AZStd::string projectPresetsPath = AZStd::string::format("%s/Config/TLS/", m_projectRoot.c_str());
+    AZStd::string gemPresetsPath = AZStd::string::format("%s/Config/Sune/", m_gemRoot.c_str());
+    AZStd::string projectPresetsPath = AZStd::string::format("%s/Config/Sune/", m_projectRoot.c_str());
 
     char resolved[AZ_MAX_PATH_LEN];
 

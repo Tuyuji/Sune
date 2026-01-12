@@ -6,14 +6,14 @@
  */
 #pragma once
 
-#include <TuLabSound/Effects/VisualizerBus.h>
+#include <Sune/Effects/VisualizerBus.h>
 
 namespace lab
 {
     class AnalyserNode;
 }
 
-namespace TuLabSound
+namespace Sune
 {
     class VisualizerEffect
         : public IPlayerAudioEffect
@@ -55,4 +55,4 @@ namespace TuLabSound
         float m_scaleMultiplier = 5.0f; // How much to scale entities based on frequency
         float m_minScale = 0.1f; // Minimum entity scale
     };
-} // TuLabSound
+} // Sune

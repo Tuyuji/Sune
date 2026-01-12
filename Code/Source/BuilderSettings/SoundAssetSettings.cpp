@@ -6,7 +6,7 @@
  */
 #include "SoundAssetSettings.h"
 
-void TuLabSound::SoundAssetSettings::Reflect(AZ::ReflectContext* context)
+void Sune::SoundAssetSettings::Reflect(AZ::ReflectContext* context)
 {
     auto sc = azrtti_cast<AZ::SerializeContext*>(context);
     if (sc)

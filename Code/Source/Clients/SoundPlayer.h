@@ -10,9 +10,9 @@
 #include "AzCore/Asset/AssetCommon.h"
 #include "LabSound/core/GainNode.h"
 #include "LabSound/core/PannerNode.h"
-#include "TuLabSound/AudioBusManagerInterface.h"
-#include "TuLabSound/PlayerAudioEffect.h"
-#include "TuLabSound/TuLabSoundBus.h"
+#include "Sune/AudioBusManagerInterface.h"
+#include "Sune/PlayerAudioEffect.h"
+#include "Sune/SuneBus.h"
 
 namespace lab
 {
@@ -25,7 +25,7 @@ namespace lab
     class SampledAudioNode;
 }
 
-namespace TuLabSound
+namespace Sune
 {
     class SoundAsset;
 
@@ -36,7 +36,7 @@ namespace TuLabSound
     };
 
     class SoundPlayer
-        : public TuSoundPlayerRequestBus::Handler
+        : public SoundPlayerRequestBus::Handler
         , protected AZ::Data::AssetBus::MultiHandler
     {
     public:
@@ -82,15 +82,15 @@ namespace TuLabSound
         //AssetBus
         void OnAssetReady(AZ::Data::Asset<AZ::Data::AssetData> asset) override;
     private:
-        friend class TuLabSoundSystemComponent;
+        friend class SuneSystemComponent;
         void ReconnectGraph();
 
         SoundPlayerId m_id = SoundPlayerId();
         AudioBusId m_busId = InvalidAudioBusId;
 
         AZ::Data::AssetId m_assetId = {};
-        AZ::Data::Asset<TuLabSound::SoundAsset> m_currentAsset = {};
-        AZ::Data::Asset<TuLabSound::SoundAsset> m_pendingAsset = {};
+        AZ::Data::Asset<Sune::SoundAsset> m_currentAsset = {};
+        AZ::Data::Asset<Sune::SoundAsset> m_pendingAsset = {};
         std::shared_ptr<lab::AudioBus> m_assetBus = {};
         AZStd::vector<PlaybackEvent> m_schedPlayEvents = {};
 
@@ -103,4 +103,4 @@ namespace TuLabSound
         bool m_canPlayMultiple = true;
         bool m_gainConnected = false;
     };
-} // TuLabSound
+} // Sune

@@ -8,7 +8,7 @@
 #include "SoundAssetSettings.h"
 #include <AzCore/Serialization/SerializeContext.h>
 
-using namespace TuLabSound;
+using namespace Sune;
 
 void SoundPresetSettings::Reflect(AZ::ReflectContext* context)
 {

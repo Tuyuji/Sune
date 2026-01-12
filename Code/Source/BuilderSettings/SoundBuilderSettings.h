@@ -9,7 +9,7 @@
 #include "AzCore/RTTI/ReflectContext.h"
 #include "AzCore/RTTI/TypeInfoSimple.h"
 
-namespace TuLabSound
+namespace Sune
 {
     //Global settings for the builder, platforms can modify.
     struct SoundBuilderSettings

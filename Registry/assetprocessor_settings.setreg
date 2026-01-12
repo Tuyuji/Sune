@@ -2,13 +2,13 @@
     "Amazon": {
         "AssetProcessor": {
             "Settings": {
-                "ScanFolder TuLabSound/Assets": {
-                    "watch": "@GEMROOT:TuLabSound@/Assets",
+                "ScanFolder Sune/Assets": {
+                    "watch": "@GEMROOT:Sune/Assets",
                     "recursive": 1,
                     "order": 101
                 },
-                "ScanFolder TuLabSound/Registry": {
-                    "watch": "@GEMROOT:TuLabSound@/Registry",
+                "ScanFolder Sune/Registry": {
+                    "watch": "@GEMROOT:Sune@/Registry",
                     "recursive": 1,
                     "order": 102
                 }

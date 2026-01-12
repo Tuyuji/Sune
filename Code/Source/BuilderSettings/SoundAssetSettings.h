@@ -8,9 +8,9 @@
 #include "AzCore/Memory/SystemAllocator.h"
 #include "AzCore/RTTI/ReflectContext.h"
 #include "AzCore/RTTI/TypeInfoSimple.h"
-#include "TuLabSound/SoundAsset.h"
+#include "Sune/SoundAsset.h"
 
-namespace TuLabSound
+namespace Sune
 {
     //Per-asset override settings (stored in .assetinfo)
     struct SoundAssetSettings

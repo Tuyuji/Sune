@@ -6,7 +6,7 @@
  */
 #include "AudioPlayerComponent.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 void AudioPlayerComponent::Reflect(AZ::ReflectContext* context)
 {

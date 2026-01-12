@@ -5,13 +5,13 @@
  * For complete copyright and license terms please see the LICENSE at the root of this distribution.
  */
 #include <cstring>
-#include <TuLabSound/Utils.h>
+#include <Sune/Utils.h>
 #include <libnyquist/Common.h>
 #include <libnyquist/Decoders.h>
 
 #include "LabSound/core/AudioBus.h"
 
-using namespace TuLabSound;
+using namespace Sune;
 
 nqr::NyquistIO nyquist_io;
 
@@ -58,7 +58,7 @@ std::shared_ptr<lab::AudioBus> LoadInternal(nqr::AudioData * audioData, bool mix
     return audioBus;
 }
 
-std::shared_ptr<lab::AudioBus> TuLabSound::MakeBusFromAudioData(void* fileData, size_t size)
+std::shared_ptr<lab::AudioBus> Sune::MakeBusFromAudioData(void* fileData, size_t size)
 {
     auto audioData = new nqr::AudioData();
     std::vector<uint8_t> rawData((uint8_t*)fileData, (uint8_t*)fileData + size);
