@@ -21,6 +21,7 @@ namespace Sune
         , public VisualizerEffectRequestBus::Handler
     {
     public:
+        static constexpr AZ::Crc32 RegisterName = AZ_CRC_CE("visualizer");
         VisualizerEffect();
         virtual ~VisualizerEffect() override;
 

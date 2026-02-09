@@ -342,7 +342,7 @@ uint64_t SoundPlayer::GetPositionInMicroseconds()
     return static_cast<uint64_t>(micros);
 }
 
-PlayerEffectId SoundPlayer::AddEffect(const AZStd::string& effectName)
+PlayerEffectId SoundPlayer::AddEffect(AZ::Crc32 effectName)
 {
     PlayerEffectId id = PlayerEffectId();
     auto ctx = SuneInterface::Get()->GetLabContext();

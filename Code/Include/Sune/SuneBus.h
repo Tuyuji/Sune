@@ -44,7 +44,7 @@ namespace Sune
         AZ_RTTI(PlayerEffectFactoryRequests, "{A5E2F8D3-6B4C-4E9A-8F5D-2C7A9B3E1F6D}");
         virtual ~PlayerEffectFactoryRequests() = default;
 
-        virtual IPlayerAudioEffect* CreateEffect(const AZStd::string& id) = 0;
+        virtual IPlayerAudioEffect* CreateEffect(AZ::Crc32 id) = 0;
     };
 
     class PlayerEffectFactoryBusTraits
@@ -53,15 +53,15 @@ namespace Sune
     public:
         static constexpr AZ::EBusHandlerPolicy HandlerPolicy = AZ::EBusHandlerPolicy::Single;
         static constexpr AZ::EBusAddressPolicy AddressPolicy = AZ::EBusAddressPolicy::ById;
-        using BusIdType = AZStd::string;
+        using BusIdType = AZ::Crc32;
     };
 
     using PlayerEffectFactoryBus = AZ::EBus<PlayerEffectFactoryRequests, PlayerEffectFactoryBusTraits>;
 
-    inline IPlayerAudioEffect* CreateEffect(const AZStd::string& effectId)
+    inline IPlayerAudioEffect* CreateEffect(const AZ::Crc32 effectId)
     {
         IPlayerAudioEffect* effect = nullptr;
-        PlayerEffectFactoryBus::BroadcastResult(effect, &PlayerEffectFactoryRequests::CreateEffect, effectId);
+        PlayerEffectFactoryBus::EventResult(effect, effectId, &PlayerEffectFactoryRequests::CreateEffect, effectId);
         return effect;
     }
 
@@ -81,12 +81,6 @@ namespace Sune
         //A generic player that can play audio assets
         virtual SoundPlayerId CreatePlayer() {return SoundPlayerId();}
         virtual void DestroyPlayer(SoundPlayerId id) {}
-
-        //! Create an effect by name (queries the PlayerEffectFactoryBus)
-        virtual IPlayerAudioEffect* CreateEffect(const AZStd::string& name)
-        {
-            return nullptr;
-        }
     };
 
     class SuneBusTraits
@@ -138,7 +132,7 @@ namespace Sune
         virtual float GetPositionInSeconds() = 0;
         virtual uint64_t GetPositionInMicroseconds() = 0;
 
-        virtual PlayerEffectId AddEffect(const AZStd::string& effectName) = 0;
+        virtual PlayerEffectId AddEffect(AZ::Crc32 effectName) = 0;
         virtual void RemoveEffect(PlayerEffectId id) = 0;
 
         //Finds the first spatialization effect.

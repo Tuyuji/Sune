@@ -64,7 +64,7 @@ namespace Sune
         SoundPlayerId CreatePlayer() override;
         void DestroyPlayer(SoundPlayerId id) override;
 
-        IPlayerAudioEffect* CreateEffect(const AZStd::string& name) override;
+        IPlayerAudioEffect* CreateEffect(AZ::Crc32 name) override;
 
         int GetPeriodSizeInFrames() const override
         {

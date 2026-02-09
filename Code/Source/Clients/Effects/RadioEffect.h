@@ -22,6 +22,7 @@ namespace Sune
         , public PlayerEffectImGuiRequestBus::Handler
     {
     public:
+        static constexpr AZ::Crc32 RegisterName = AZ_CRC_CE("radio");
         bool Initialize(lab::AudioContext& ac) override;
         void Shutdown() override;
 

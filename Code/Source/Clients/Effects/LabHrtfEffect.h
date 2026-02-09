@@ -16,6 +16,7 @@ namespace Sune
         , protected PlayerEffectImGuiRequestBus::Handler
     {
     public:
+        static constexpr AZ::Crc32 RegisterName = AZ_CRC_CE("labhrtf");
         bool Initialize(lab::AudioContext& ac) override;
         void Shutdown() override;
 

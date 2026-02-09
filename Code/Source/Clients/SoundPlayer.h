@@ -74,7 +74,7 @@ namespace Sune
         float GetPositionInSeconds() override;
         uint64_t GetPositionInMicroseconds() override;
 
-        PlayerEffectId AddEffect(const AZStd::string& effectName) override;
+        PlayerEffectId AddEffect(AZ::Crc32 effectName) override;
         void RemoveEffect(PlayerEffectId id) override;
 
         PlayerEffectId GetSpatializationEffectId() override;

@@ -29,6 +29,7 @@
 #include "Effects/RadioEffect.h"
 #include "Effects/VisualizerEffect.h"
 #include "Sune/AudioPlayerBus.h"
+#include "AudioGraph/Manager.h"
 
 namespace Sune
 {
@@ -132,9 +133,9 @@ namespace Sune
 
         ImGui::ImGuiUpdateListenerBus::Handler::BusConnect();
 
-        PlayerEffectFactoryBus::MultiHandler::BusConnect("labhrtf");
-        PlayerEffectFactoryBus::MultiHandler::BusConnect("radio");
-        PlayerEffectFactoryBus::MultiHandler::BusConnect("visualizer");
+        PlayerEffectFactoryBus::MultiHandler::BusConnect(LabHrtfEffect::RegisterName);
+        PlayerEffectFactoryBus::MultiHandler::BusConnect(RadioEffect::RegisterName);
+        PlayerEffectFactoryBus::MultiHandler::BusConnect(VisualizerEffect::RegisterName);
     }
 
     SuneSystemComponent::~SuneSystemComponent()
@@ -162,13 +163,13 @@ namespace Sune
         m_players.erase(id);
     }
 
-    IPlayerAudioEffect* SuneSystemComponent::CreateEffect(const AZStd::string& name)
+    IPlayerAudioEffect* SuneSystemComponent::CreateEffect(AZ::Crc32 name)
     {
-        if (name == "labhrtf")
+        if (name == LabHrtfEffect::RegisterName)
             return aznew LabHrtfEffect();
-        if (name == "radio")
+        if (name == RadioEffect::RegisterName)
             return aznew RadioEffect();
-        if (name == "visualizer")
+        if (name == VisualizerEffect::RegisterName)
             return aznew VisualizerEffect();
 
         return nullptr;

@@ -12,6 +12,7 @@
 
 #include <Sune/AudioPlayerBus.h>
 #include <Sune/Effects/VisualizerBus.h>
+#include "Clients/Effects/VisualizerEffect.h"
 
 using namespace Sune;
 
@@ -78,7 +79,7 @@ void VisualizerComponent::Activate()
         m_visualizerEffectId,
         m_playerId,
         &SoundPlayerRequestBus::Events::AddEffect,
-        "visualizer");
+        VisualizerEffect::RegisterName);
 
     if (!m_visualizerEffectId.IsValid())
     {
