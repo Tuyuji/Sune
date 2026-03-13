@@ -230,6 +230,8 @@ void SoundPlayer::PlayAtSeconds(float seconds)
         return;
     }
 
+    seconds = AZStd::max(seconds, 0.0f);
+
     if (m_currentAsset.GetId() != m_assetId)
     {
         //Still in the process of waiting on the bus to be loaded
@@ -253,6 +255,8 @@ void SoundPlayer::PlayLooping(int loopCount, float seconds)
         AZ_Error("Sune", false, "No asset set for player %d", m_id);
         return;
     }
+
+    seconds = AZStd::max(seconds, 0.0f);
 
     if (m_currentAsset.GetId() != m_assetId)
     {
@@ -355,7 +359,7 @@ PlayerEffectId SoundPlayer::AddEffect(AZ::Crc32 effectName)
         effect->m_id = id;
         effect->m_playerId = m_id;
         effect->Initialize(*ctx);
-        m_effects.push_back(AZStd::move(AZStd::unique_ptr<IPlayerAudioEffect>(effect)));
+        m_effects.push_back(AZStd::unique_ptr<IPlayerAudioEffect>(effect));
     }
 
     if (id != PlayerEffectId())
